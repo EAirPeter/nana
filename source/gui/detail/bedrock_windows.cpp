@@ -690,6 +690,7 @@ namespace detail
 		case WM_MOUSELEAVE:
 		case WM_MOUSEWHEEL:	//The WM_MOUSELAST may not include the WM_MOUSEWHEEL/WM_MOUSEHWHEEL when the version of SDK is low.
 		case WM_MOUSEHWHEEL:
+        case WM_APP:
 			return false;
 		default:
 			if((WM_MOUSEFIRST <= msg && msg <= WM_MOUSELAST) || (WM_KEYFIRST <= msg && msg <= WM_KEYLAST))
@@ -1572,6 +1573,14 @@ namespace detail
 					def_window_proc = true;
 				}
 				break;
+            case WM_APP:
+            {
+                arg_user arg;
+                arg.window_handle = reinterpret_cast<window>(msgwnd);
+                arg.param = reinterpret_cast<void*>(lParam);
+                brock.emit(event_code::user, msgwnd, arg, true, &context);
+                break;
+            }
 			default:
 				def_window_proc = true;
 			}
@@ -1793,6 +1802,11 @@ namespace detail
 		::ShowCursor(FALSE);
 		::SetCursor(rev_handle);
 	}
+
+    void bedrock::user(core_window_t *wd, void *param)
+    {
+        ::PostMessageW(reinterpret_cast<HWND>(wd->root), WM_APP, 0, reinterpret_cast<LPARAM>(param));
+    }
 
 	void bedrock::_m_event_filter(event_code event_id, core_window_t * wd, thread_context * thrd)
 	{

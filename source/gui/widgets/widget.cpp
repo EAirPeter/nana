@@ -183,6 +183,11 @@ namespace nana
 			_m_size(sz);
 		}
 
+        void widget::user(void *param)
+        {
+            API::user(handle(), param);
+        }
+
 		void widget::set_capture(bool ignore_children)
 		{
 			API::set_capture(*this, ignore_children);

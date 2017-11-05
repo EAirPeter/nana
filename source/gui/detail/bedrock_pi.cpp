@@ -604,6 +604,14 @@ namespace nana
 						evts_ptr->destroy.emit(*arg, reinterpret_cast<window>(wd));
 				}
 				break;
+            case event_code::user:
+                if (bProcess__External_event)
+                {
+                    auto arg = dynamic_cast<const arg_user*>(&event_arg);
+                    if (arg)
+                        evts_ptr->user.emit(*arg, reinterpret_cast<window>(wd));
+                }
+                break;
 			default:
 				throw std::runtime_error("Invalid event code");
 			}

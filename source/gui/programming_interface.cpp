@@ -1466,5 +1466,11 @@ namespace API
 		
 		return{};
 	}
+
+    void user(window wd, void *param)
+    {
+        restrict::bedrock.user(reinterpret_cast<basic_window*>(wd), param);
+    }
+
 }//end namespace API
 }//end namespace nana
